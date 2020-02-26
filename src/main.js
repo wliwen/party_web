@@ -10,10 +10,7 @@ import './permission'
 Vue.config.productionTip = false
 Vue.use(iView)
 
-// 设置基础URL
-axios.defaults.baseURL = ''
-// 设置请求超时时间
-axios.defaults.timeout = 5000
+
 
 Vue.prototype.$axios = axios
 

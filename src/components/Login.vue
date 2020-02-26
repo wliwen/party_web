@@ -6,11 +6,11 @@
         <div class="container">
             <p class="title">学生党员管理系统</p>
             <div class="input-c">
-                <Input prefix="ios-contact" v-model="account" placeholder="用户名" clearable @on-blur="verifyAccount"/>
+                <Input prefix="ios-contact" v-model="userid" placeholder="用户名" clearable />
                 <p class="error">{{accountError}}</p>
             </div>
             <div class="input-c">
-                <Input type="password" v-model="pwd" prefix="md-lock" placeholder="密码" clearable @on-blur="verifyPwd"/>
+                <Input type="password" v-model="userpassword" prefix="md-lock" placeholder="密码" clearable/>
                 <p class="error">{{pwdError}}</p>
             </div>
             <Button :loading="isShowLoading" class="submit" type="primary" @click="submit">登陆</Button>
@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: 'login',
     data() {
@@ -103,12 +104,12 @@ export default {
             registerModal:false,
             vedioCanPlay: false,
             fixStyle: '',
-            account: 'admin',
-            pwd: 'admin',
+            userid: '',
+            userpassword: '',
             accountError: '',
             pwdError: '',
             isShowLoading: false,
-           
+            ruleInline:{},
         }
     },
      mounted: function() {   //屏幕自适应
@@ -176,20 +177,7 @@ export default {
             this.vedioCanPlay = true
       },
 
-        verifyAccount(e) {
-            if (this.account !== 'admin') {
-                this.accountError = '账号为admin'
-            } else {
-                this.accountError = ''
-            }
-        },
-        verifyPwd(e) {
-            if (this.pwd !== 'admin') {
-                this.pwdError = '密码为admin'
-            } else {
-                this.pwdError = ''
-            }
-        },
+        
         register() {
            this.registerModal=true
         },
@@ -197,23 +185,39 @@ export default {
            this.forget_pwd_Dilog=true
         },
         submit() {
-            if (this.account === 'admin' && this.pwd === 'admin') {
-                this.isShowLoading = true
-                // 登陆成功 设置用户信息,将信息存入缓存中
-                localStorage.setItem('userImg', 'https://avatars3.githubusercontent.com/u/22117876?s=460&v=4')
-                localStorage.setItem('userName', '小明')
-                // 登陆成功 假设这里是后台返回的 token
-                localStorage.setItem('token', 'i_am_token')
-                this.$router.push({path: this.redirect || '/'})
-            } else {
-                if (this.account !== 'admin') {
-                    this.accountError = '账号错误'
-                } 
 
-                if (this.pwd !== 'admin') {
-                    this.pwdError = '密码错误'
-                } 
+        if(this.userid===''||this.userpassword===''){
+             this.$Message.warning('请填写工号和密码', 3)
             }
+           else{var param={};
+            param.user_id=this.userid;
+            param.user_password=this.userpassword;
+            axios({
+                method:'post',
+                url:'/api/login',
+                data:param,
+            }).then(res=>{
+                var r;
+                if(res.data===undefined){
+                    r=res
+                }else{
+                    r=res.data
+                }
+                console.log(r)
+                if(r.msg==""||r.msg==undefined){
+                    this.isShowLoading = true
+                    // 登陆成功 设置用户信息,将信息存入缓存中
+                localStorage.setItem('userName', r.user_name)
+                // 登陆成功 假设这里是后台返回的 token
+                localStorage.setItem('token',r.token)
+                this.$router.push({path: this.redirect || '/'})
+                }else{
+                    this.$Message.error(r.msg, 5)
+                    this.userid=''
+                    this.userpassword=''
+                }
+            })}
+           
         }
     }
 }
