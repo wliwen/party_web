@@ -197,6 +197,7 @@ export default {
                 url:'/api/login',
                 data:param,
             }).then(res=>{
+               
                 var r;
                 if(res.data===undefined){
                     r=res
@@ -207,10 +208,11 @@ export default {
                 if(r.msg==""||r.msg==undefined){
                     this.isShowLoading = true
                     // 登陆成功 设置用户信息,将信息存入缓存中
-                localStorage.setItem('userName', r.user_name)
+                localStorage.setItem('userName', r.user.user_name)
                 // 登陆成功 假设这里是后台返回的 token
                 localStorage.setItem('token',r.token)
-                this.$router.push({path: this.redirect || '/'})
+                this.getmenu(r.user)
+                
                 }else{
                     this.$Message.error(r.msg, 5)
                     this.userid=''
@@ -218,6 +220,18 @@ export default {
                 }
             })}
            
+        },
+        getmenu(param){
+            axios({
+                method:'post',
+                url:'/api/getmenu',
+                data:param,
+                
+            }).then(res=>{
+               this.$store.commit('setMenus',res.data)
+               localStorage.setItem("menu",JSON.stringify(res.data))
+               this.$router.push({path: this.redirect||'/home'})
+            })
         }
     }
 }

@@ -8,44 +8,59 @@ const store = new Vuex.Store({
         // 左侧菜单栏数据
         menuItems: [
             {
-                name: 'home', // 要跳转的路由名称 不是路径
-                size: 18, // icon大小
-                type: 'md-home', // icon类型
-                text: '主页', // 文本内容
-            },
-            {
-                text: '二级菜单',
-                type: 'ios-paper',
-                children: [
-                    {
-                        type: 'ios-grid',
-                        name: 't1',
-                        text: '表格',
-                        hidden: true, // 隐藏此菜单 可以通过在地址栏上输入对应的 URL 来显示页面
-                    },
-                    {
-                        text: '三级菜单',
-                        type: 'ios-paper',
-                        children: [
-                            {
-                                type: 'ios-notifications-outline',
-                                name: 'msg',
-                                text: '查看消息'
-                            },
-                            {
-                                type: 'md-lock',
-                                name: 'password',
-                                text: '修改密码'
-                            },
-                            {
-                                type: 'md-person',
-                                name: 'userinfo',
-                                text: '基本资料',
-                            }
-                        ]
-                    }
-                ]
-            }
+                name: "home",
+                size: 18,
+                text: "主页",
+                type: "md-home"},
+                {hide: "false",
+                level: 1,
+                menu_id: 0,
+                name: "teachermanger",
+                size: 18,
+                text: "老师管理",
+                type: "md-home"},
+                {hide: "false",
+                level: 0,
+                menu_id: 0,
+                name: "usermanger",
+                size: 18,
+                text: "角色管理",
+                type: "md-home"},
+                {hide: "false",
+                level: 0,
+                menu_id: 0,
+                name: "menumanger",
+                size: 18,
+                text: "菜单管理",
+                type: "md-home"},
+                {hide: "false",
+                level: 0,
+                menu_id: 0,
+                name: "partyorgmanger",
+                size: 18,
+                text: "党组织管理",
+                type: "md-home"},
+                {hide: "false",
+                level: 1,
+                menu_id: 0,
+                name: "thinkmanger",
+                size: 18,
+                text: "思想管理",
+                type: "md-home"},
+                {hide: "false",
+                level: 1,
+                menu_id: 0,
+                name: "workmanger",
+                size: 18,
+                text: "工作管理",
+                type: "md-home"},
+                {hide: "false",
+                level: 1,
+                menu_id: 0,
+                name: "paymanger",
+                size: 18,
+                text: "缴费管理",
+                type: "md-home"},
         ],
     },
     mutations: {

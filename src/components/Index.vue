@@ -239,7 +239,11 @@ export default {
     computed: {
         // 菜单栏
         menuItems() {
-            return this.$store.state.menuItems
+             if(JSON.parse(localStorage.getItem("menu"))!=undefined&&JSON.parse(localStorage.getItem("menu"))!=null){
+        return JSON.parse(localStorage.getItem("menu"))
+        }else{
+               return this.$store.state.menuItems
+        }
         },
         // 需要缓存的路由
         keepAliveData() {

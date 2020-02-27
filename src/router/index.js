@@ -19,25 +19,40 @@ export const asyncRoutes = {
         name: 'home',
         component: () => import('../views/Home.vue')
     },
-    't1': {
-        path: 't1',
-        name: 't1',
-        component: () => import('../views/T1.vue')
+    'teachermanger':{
+        path: 'teachermanger',
+        name: 'teachermanger',
+        component: () => import('../views/Teachermanger.vue')
     },
-    'password': {
-        path: 'password',
-        name: 'password',
-        component: () => import('../views/Password.vue')
+    'usermanger':{
+        path: 'usermanger',
+        name: 'usermanger',
+        component: () => import('../views/Usermanger.vue')
     },
-    'msg': {
-        path: 'msg',
-        name: 'msg',
-        component: () => import('../views/Msg.vue')
+    'partyorgmanger':{
+        path: 'partyorgmanger',
+        name: 'partyorgmanger',
+        component: () => import('../views/Partyorgmanger.vue')
     },
-    'userinfo': {
-        path: 'userinfo',
-        name: 'userinfo',
-        component: () => import('../views/UserInfo.vue')
+    'thinkmanger':{
+        path: 'thinkmanger',
+        name: 'thinkmanger',
+        component: () => import('../views/Thinkmanger.vue')
+    },
+    'workmanger':{
+        path: 'workmanger',
+        name: 'workmanger',
+        component: () => import('../views/Workmanger.vue')
+    },
+    'paymanger':{
+        path: 'paymanger',
+        name: 'paymanger',
+        component: () => import('../views/Paymanger.vue')
+    },
+    'menumanger':{
+        path: 'menumanger',
+        name: 'menumanger',
+        component: () => import('../views/Menumanger.vue')
     }
 }
 
