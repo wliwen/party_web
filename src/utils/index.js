@@ -1,5 +1,6 @@
 import { asyncRoutes, resetRouter } from '../router'
-
+import axios from 'axios'
+import Vue from '../main.js'
 // 将菜单信息转成对应的路由信息 动态添加
 export function menusToRoutes(data) {
     const result = []
@@ -46,4 +47,26 @@ export function resetTokenAndClearUser() {
     localStorage.setItem('userName', '')
     // 重设路由
     resetRouter()
+}
+//封装axios,添加自定义
+export function v_axios(url,method,param,headers){
+    axios({
+        url:url,
+        method:method,
+        param:param,
+        headers:{"token":localStorage.getItem("token")?localStorage.getItem("token"):"",headers},
+    }).then(res=>{
+        console.log(res)
+        //过期处理
+        if(res.code===4396){
+            resetTokenAndClearUser()
+            Vue.$router.push({path:"/login",query: {
+                code: res.code,
+                content:res.content,
+                flag:res.flag
+              }})
+        }else{
+            return res
+        }
+    })
 }

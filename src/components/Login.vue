@@ -140,8 +140,20 @@ export default {
         }
       }
       window.onresize()
+    //   console.log('===>',this.$route.query)
+    //路由提取
+    if(this.$route.query!==false&&this.$route.query.code===4396){
+        this.$Modal.error({
+            title:this.$route.query.code,
+            content:this.$route.query.content,
+            okText:"重新登录",
+            onOk:()=>{
+                //清除路由参数
+               this.$router.push({path:'/login'})
+            }
+        })
+    }
     },
-
     watch: {
         $route: {
             handler: function(route) {
@@ -226,7 +238,6 @@ export default {
                 method:'post',
                 url:'/api/getmenu',
                 data:param,
-                
             }).then(res=>{
                this.$store.commit('setMenus',res.data)
                localStorage.setItem("menu",JSON.stringify(res.data))

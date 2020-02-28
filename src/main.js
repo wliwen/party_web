@@ -14,9 +14,10 @@ Vue.use(iView)
 
 Vue.prototype.$axios = axios
 
-new Vue({
+var vue =new Vue({
     el: '#app',
     router,
     store,
     render: h => h(App)
 })
+export default vue //将vue对象默认导出，便于其他地方使用该对象

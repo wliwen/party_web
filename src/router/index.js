@@ -14,6 +14,11 @@ const commonRoutes = [
 
 // 需要通过后台数据来生成的组件
 export const asyncRoutes = {
+    'login': {
+        path: 'login',
+        name: 'login',
+        component: () => import('../components/Login.vue')
+    },
     'home': {
         path: 'home',
         name: 'home',
