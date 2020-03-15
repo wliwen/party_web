@@ -11,7 +11,7 @@
             <Menu class="menu" ref="asideMenu" theme="dark" width="100%" @on-select="gotoPage" 
             accordion :open-names="openMenus" :active-name="currentPage" @on-open-change="menuChange">
                 <!-- 动态菜单 -->
-                <div v-for="(item, index) in menuItems" :key="index">
+                <div v-for="(item, index) in menuItems" v-if="item.type!='na'" :key="index">
                     <Submenu v-if="item.children" :name="index">
                         <template slot="title">
                             <Icon :size="item.size" :type="item.type"/>
