@@ -73,9 +73,8 @@
                             </div>
                             <DropdownMenu slot="list">
                                 <!-- name标识符 -->
-                                <DropdownItem name="1">修改密码</DropdownItem>
-                                <DropdownItem name="2">基本信息</DropdownItem>
-                                <DropdownItem divided  name="3">退出登陆</DropdownItem>
+                                <DropdownItem name="1">基本信息</DropdownItem>
+                                <DropdownItem divided  name="2">退出登陆</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -334,14 +333,10 @@ export default {
         userOperate(name) {
             switch(name) {
                 case '1':
-                    // 修改密码
-                    this.gotoPage('password')
+                    // 基本资料
+                    this.$router.push({path:'userinfo'})
                     break
                 case '2':
-                    // 基本资料
-                    this.gotoPage('userinfo')
-                    break
-                case '3':
                     resetTokenAndClearUser()
                     this.$router.replace({name: 'login'})
                     break

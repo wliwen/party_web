@@ -61,6 +61,13 @@ const store = new Vuex.Store({
                 size: 18,
                 text: "缴费管理",
                 type: "md-home"},
+                {hide: "false",
+                level: 1,
+                menu_id: 0,
+                name: "userinfo",
+                size: 18,
+                text: "基本信息",
+                type: "na"},
         ],
     },
     mutations: {

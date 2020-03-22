@@ -176,7 +176,7 @@ export default {
                    },
                    {
                         title: '操作',
-                         width: 150,
+                         width: 100,
                         fixed: 'right',
                         render: (h, params) => {
                             var self=this;

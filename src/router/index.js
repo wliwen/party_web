@@ -58,6 +58,11 @@ export const asyncRoutes = {
         path: 'menumanger',
         name: 'menumanger',
         component: () => import('../views/Menumanger.vue')
+    },
+    'userinfo':{
+        path: 'userinfo',
+        name: 'userinfo',
+        component: () => import('../views/Userinfo.vue')
     }
 }
 

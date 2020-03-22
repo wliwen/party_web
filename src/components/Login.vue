@@ -220,6 +220,7 @@ export default {
                 if(r.msg==""||r.msg==undefined){
                     this.isShowLoading = true
                     // 登陆成功 设置用户信息,将信息存入缓存中
+                localStorage.setItem('user', r.user)
                 localStorage.setItem('userName', r.user.user_name)
                 // 登陆成功 假设这里是后台返回的 token
                 localStorage.setItem('token',r.token)
