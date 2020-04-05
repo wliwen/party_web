@@ -206,7 +206,7 @@ export default {
             param.user_password=this.userpassword;
             axios({
                 method:'post',
-                url:'/api/login',
+                url:'party/login',
                 data:param,
             }).then(res=>{
                
@@ -237,7 +237,7 @@ export default {
         getmenu(param){
             axios({
                 method:'post',
-                url:'/api/getmenu',
+                url:'party/getmenu',
                 data:param,
             }).then(res=>{
                this.$store.commit('setMenus',res.data)

@@ -11,13 +11,13 @@
               </i-col>
                <i-col span="8"   >
                    <Form-item label="工号：">
-                  <i-input placeholder="请输入党员id..." v-model='number_no'/>
+                  <i-input placeholder="请输入工号..." v-model='number_no'/>
                    </Form-item>
               </i-col>
               <i-col span="8">
                    <i-button type="primary" icon="ios-search" @click="add">新增</i-button>
                   <i-button type="primary" icon="ios-search" style="margin-left:8px" @click="getPartylist">搜索</i-button>
-                   <i-button type="primary" icon="ios-search"  style="margin-left:8px">导出</i-button>
+                   <i-button type="primary" icon="ios-search"  style="margin-left:8px" @click="exportT">导出</i-button>
               </i-col>
           </Row>
           </i-form>
@@ -85,14 +85,14 @@
                  <Row>
                     <i-col span='23'>
                 <Form-item prop="in_date" label="入党时间：">
-                     <Date-picker :disabled="enable" type="date" v-model="auModel_data.in_date" format="yyyy年MM月dd日" placeholder="选择入党时间" style="width: 100%" ></Date-picker>
+                     <Date-picker :disabled="enable" type="date" @on-change="changeE(auModel_data.in_date)" v-model="auModel_data.in_date" format="yyyy年MM月dd日" placeholder="选择入党时间" style="width: 100%" ></Date-picker>
                  </Form-item>
                     </i-col>
                 </Row>
                  <Row>
                     <i-col span='23'>
                 <Form-item prop="correction_date" label="转正时间：">
-                    <Date-picker :disabled="enable" type="date" v-model="auModel_data.correction_date" format="yyyy年MM月dd日" placeholder="选择转正时间" style="width: 100%" ></Date-picker>
+                    <Date-picker :disabled="enable" type="date" @on-change="changeD(auModel_data.correction_date)"  v-model="auModel_data.correction_date" format="yyyy年MM月dd日" placeholder="选择转正时间" style="width: 100%" ></Date-picker>
                  </Form-item>
                     </i-col>
                 </Row>
@@ -118,7 +118,8 @@
 </template>
 
 <script>
-import {v_axios} from '../utils'
+import {v_axios,exportExcel} from '../utils'
+import {changeDate} from '../utils'
 import axios from 'axios'
 export default {
     name: 'partyorgmanger',
@@ -183,7 +184,7 @@ export default {
                    },
                    {
                         title: '操作',
-                         width: 100,
+                         width: 180,
                         fixed: 'right',
                         render: (h, params) => {
                             var self=this;
@@ -201,6 +202,17 @@ export default {
                   }
                 },
                 "修改"
+              ),
+              h(
+                "Button",
+                {
+                  on: {
+                   click: () => {
+                    self.del(params);
+                    }
+                  }
+                },
+                "删除"
               )
             ]);
           }
@@ -209,6 +221,7 @@ export default {
                 ],
          }
      },
+     
      created(){
          this.getID()
          this.getPartylist()
@@ -217,6 +230,12 @@ export default {
            handlePage(val) {
       (this.options.pageNum = val), (this.pageNum = val);
       this.getPartylist();
+    },
+    changeE(e){
+        this.auModel_data.in_date=changeDate(e)
+    },
+    changeD(e){
+        this.auModel_data.correction_date=changeDate(e)
     },
     handlePageSize(val) {
       this.options.pageSize = val;
@@ -236,12 +255,31 @@ export default {
     async  getPartylist(){
         this.options.name=this.name;
         this.options.number_no=this.number_no;
-        let res= await v_axios('/api/getpartylist','post',this.options,"")
+        let res= await v_axios('party/getpartylist','post',this.options,"")
         this.data=res
         this.total=res[0].total
     },
+    async del(params){
+        let res= await v_axios('party/delpartyList','post',params.row,"")
+        console.log(res)
+        if(res){
+             this.$Notice.success({
+                title:'成功',
+                desc:'删除成功',
+                duration:1
+              })
+        }else{
+             this.$Notice.error({
+                title:'失败',
+                desc:'删除失败',
+                duration:1
+              })
+                return
+        }
+        this.getPartylist()
+    },
      async  getID(){
-        let res= await v_axios('/api/getautoid?time='+ Date.parse(new Date()),'get',"","")
+        let res= await v_axios('party/getautoid?time='+ Date.parse(new Date()),'get',"","")
        this.auModel_data.t_user_id=res
     },
     add(){
@@ -250,10 +288,13 @@ export default {
       this.auModel=true
       this.enable=false
     },
+     exportT(){
+      exportExcel('party/exportParty', this.options,'党员导出.xls')
+    },
    async submit(param){
      var options=this.auModel_data
       if(param=='新增用户'){
-            let res= await v_axios('/api/addpartylist','post',options,"")
+            let res= await v_axios('party/addpartylist','post',options,"")
             if(res){
               this.$Notice.success({
                 title:'成功',
@@ -270,7 +311,7 @@ export default {
             }
           
       }else if(param=='修改信息'){
-        let res= await v_axios('/api/updatepartylist','post',options,"")
+        let res= await v_axios('party/updatepartylist','post',options,"")
             if(res){
               this.$Notice.success({
                 title:'成功',
@@ -288,7 +329,7 @@ export default {
       }
       this.auModel=false
     this.auModel_data={}
-    this.getTeacherList
+    this.getPartylist()
     },
     
      }

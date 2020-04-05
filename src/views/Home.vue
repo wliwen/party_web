@@ -48,7 +48,7 @@ import {v_axios} from '../utils'
                 this.$router.push({path:'partyorgmanger'})
             },
          async   getNearUser(){
-            this.nearList=await v_axios('/api/getnearuser','get',"","")
+            this.nearList=await v_axios('party/getnearuser','get',"","")
 
             },
              drawLine(){

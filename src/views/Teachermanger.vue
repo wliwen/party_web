@@ -17,7 +17,7 @@
               <i-col span="8">
                    <i-button type="primary" icon="ios-search" @click="add">新增</i-button>
                   <i-button type="primary" icon="ios-search" style="margin-left:8px" @click="getTeacherList">搜索</i-button>
-                   <i-button type="primary" icon="ios-search"  style="margin-left:8px">导出</i-button>
+                   <i-button type="primary" icon="ios-search"  style="margin-left:8px" @click="exportT">导出</i-button>
               </i-col>
           </Row>
           </i-form>
@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import {v_axios} from '../utils'
+import {v_axios,exportExcel} from '../utils'
 import axios from 'axios'
 export default {
     name: 'teachermanger',
@@ -176,7 +176,7 @@ export default {
                    },
                    {
                         title: '操作',
-                         width: 100,
+                         width: 180,
                         fixed: 'right',
                         render: (h, params) => {
                             var self=this;
@@ -194,6 +194,17 @@ export default {
                   }
                 },
                 "修改"
+              ),
+               h(
+                "Button",
+                {
+                  on: {
+                   click: () => {
+                    self.del(params);
+                    }
+                  }
+                },
+                "删除"
               )
             ]);
           }
@@ -228,7 +239,7 @@ export default {
     async  getTeacherList(){
         this.options.name=this.name;
         this.options.number_no=this.number_no;
-        let res= await v_axios('/api/getteacherlist','post',this.options,"")
+        let res= await v_axios('party/getteacherlist','post',this.options,"")
         this.data=res
         this.total=res[0].total
     },
@@ -237,16 +248,37 @@ export default {
       this.auModel=true
       this.enable=false
     },
+    async del(params){
+        let res= await v_axios('party/delteacherlist','post',params.row,"")
+        if(res){
+             this.$Notice.success({
+                title:'成功',
+                desc:'删除成功',
+                duration:1
+              })
+        }else{
+             this.$Notice.error({
+                title:'失败',
+                desc:'删除失败',
+                duration:1
+              })
+                return
+        }
+        this.getTeacherList()
+    },
+    exportT(){
+      exportExcel('party/exportTeacher', this.options,'教师导出.xls')
+    },
    async submit(param){
      var options=this.auModel_data
       if(param=='新增用户'){
-          let res1=await v_axios('/api/checkID?user_id='+options.user_id,'get',"","")
+          let res1=await v_axios('party/checkID?user_id='+options.user_id,'get',"","")
           if(res1){
             this.$Message.warning("该工号已经被使用！", 3)
             this.auModel_data.user_id=''
             return 
           }else{
-            let res= await v_axios('/api/addteacherlist','post',options,"")
+            let res= await v_axios('party/addteacherlist','post',options,"")
             if(res){
               this.$Notice.success({
                 title:'成功',
@@ -263,7 +295,7 @@ export default {
             }
           }
       }else if(param=='修改信息'){
-        let res= await v_axios('/api/updateteacherlist','post',options,"")
+        let res= await v_axios('party/updateteacherlist','post',options,"")
             if(res){
               this.$Notice.success({
                 title:'成功',

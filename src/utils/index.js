@@ -73,3 +73,45 @@ export   function  v_axios(url,method,param,headers){
 
 })
 }
+
+export function changeDate(dateA) {
+
+    var dateee = new Date(dateA).toJSON();
+    
+    var date = new Date(+new Date(dateee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
+    
+    return date;
+    };
+
+    export function exportExcel(url, options,filename) {
+        return new Promise((resolve, reject) => {
+          console.log(`${url} 请求数据，参数=>`, JSON.stringify(options))
+          axios.defaults.headers['content-type'] = 'application/json;charset=UTF-8;'
+          axios({
+            method: 'post',
+            url: url, // 请求地址
+            data: options, // 参数
+            responseType: 'blob' // 表明返回二进制对象便于接受
+          }).then(
+            response => {
+              resolve(response)
+              console.log(response)
+              let blob = new Blob([response], {
+                type: 'application/vnd.ms-excel'
+              })
+              let fileName = filename 
+              if (window.navigator.msSaveOrOpenBlob) {
+                // console.log(2)
+                navigator.msSaveBlob(blob, fileName)
+              } else {
+                // console.log(3)
+                var link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = fileName
+                link.click()
+                //释放内存
+                window.URL.revokeObjectURL(link.href)
+              }            
+            },
+            )})
+          }

@@ -126,7 +126,7 @@
         </div>
         <div slot="footer">
              <i-button     @click="cancel">取消</i-button>
-            <i-button type="primary"    @click="submit(modelText)">确定</i-button>
+            <i-button type="primary"    @click="submit(auModel_data)">确定</i-button>
         </div>
     </Modal>
     </div>
@@ -252,7 +252,7 @@ export default {
         this.case_blen()
        this.modelText='缴费详情'
       this.auModel=true
-    let res=await v_axios('/api/getpaylist','post',params.row,"")
+    let res=await v_axios('party/getpaylist','post',params.row,"")
     this.auModel_data=res[0]
 
     },
@@ -263,11 +263,27 @@ export default {
     async  getPaylist(){
         this.options.name=this.name;
         this.options.number_no=this.number_no;
-        let res= await v_axios('/api/getpartylist','post',this.options,"")
+        let res= await v_axios('party/getpartylist','post',this.options,"")
         this.data=res
         this.total=res[0].total
     },
    async submit(param){
+       let res= await v_axios('party/addpay','post',param,"")
+       if(res){
+              this.$Notice.success({
+                title:'成功',
+                desc:'新增成功',
+                duration:1
+              })
+            }else{
+              this.$Notice.error({
+                title:'失败',
+                desc:'新增失败',
+                duration:1
+              })
+              return
+            }
+            this.edit(param)
     },
     case_blen(){
      var index=new Date().getMonth();

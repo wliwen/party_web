@@ -1,49 +1,66 @@
 <template>
-    <div>
-        <Tree :data="baseData" show-checkbox></Tree>
-    </div>
+<div>
+    <Tree :data="baseData" show-checkbox></Tree>
+ </div>   
 </template>
-
 <script>
-export default {
-    name: 'menumanger',
-     data () {
+    export default {
+        name: 'menugmanger',
+        data () {
             return {
-               baseData: [{
-                    expand: true,
+                baseData: [{
+                    expand: false,
                     title: '菜单',
-                    children:[{}]
-                    }]
-            }
-        },
-        created(){
-            this.menuChangeTree()
-        },
-        methods: {
-            menuChangeTree(){
-                var items=JSON.parse(localStorage.getItem('menu'))
-                var list=[]
-                
-                for (var i in items){
-                    var item={}
-                    if(items[i].level==0 || items[i].text=='主页' ){
-                    item.title=items[i].text
-                    item.disableCheckbox=true
-                    }else{
-                        item.title=items[i].text
+                    children: [ {
+                        title: '主页',
+                        expand: false,
+                        checked: false,
+                         disabled: true,
+                        
+                    },{
+                        title: '老师管理',
+                        expand: false,
+                        checked: false,
+                        
+                    },{
+                        title: '角色管理',
+                        expand: false,
+                        checked: false,
+                        
+                    },{
+                        title: '菜单管理',
+                        expand: false,
+                        checked: false,
+                        
+                    },{
+                        title: '党组织管理',
+                        expand: false,
+                        checked: false,
+                        
+                    },{
+                        title: '思想管理',
+                        expand: false,
+                        checked: false,
+                        
+                    },{
+                        title: '工作管理',
+                        expand: false,
+                        checked: false,
+                        
+                    },{
+                        title: '缴费管理',
+                        expand: false,
+                        checked: false,
+                        
+                    },{
+                        title: '基本信息',
+                        expand: false,
+                        checked: false,
+                        
                     }
-                   list.push(item)
-                }
-               
-                 this.baseData.children=list
-                 console.log(this.baseData)
+                    ]
+                }]
             }
-
         }
-}
-       
-</script>
-
-<style scoped>
-
-</style>
+    }
+    </script>

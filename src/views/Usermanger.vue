@@ -144,7 +144,7 @@ export default {
     },
   
     async  getUserList(){
-        let res= await v_axios('/api/getuserlist','post',this.options,"")
+        let res= await v_axios('party/getuserlist','post',this.options,"")
         this.data=res
         this.total=res[0].total
     },
@@ -153,7 +153,7 @@ export default {
             this.$Message.info('该用户已解除', 3, "")
             return 
         }
-       let res= await v_axios('/api/fireuser?user_id='+e.row.user_id,'get',"","")
+       let res= await v_axios('party/fireuser?user_id='+e.row.user_id,'get',"","")
        if(res){
            this.$Notice.success({
                 title:'成功',
@@ -167,6 +167,7 @@ export default {
                 duration:1
               })
        }
+       this.getUserList()
     }
     
      }
